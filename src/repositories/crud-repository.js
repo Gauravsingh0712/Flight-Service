@@ -44,10 +44,16 @@ class CrudRepository {
             }
         });
         //Update returns an array with its first element as the no. of rows affected
-        if (!response[0]) {
-            throw new AppError('Not able to find or update the resource', StatusCodes.NOT_FOUND);
+        if (response[0] === 0) {
+            const ErrorResponse = {
+                message: 'Failed to update the data',
+                error: new AppError(['Failed to update the data'], StatusCodes.INTERNAL_SERVER_ERROR)
+            };
+
+            throw ErrorResponse;
         }
-        return response;
+
+        return response[0];
     }
 }
 
